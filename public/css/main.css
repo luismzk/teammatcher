@@ -1,0 +1,29 @@
+
+textarea {
+
+	width: 150px;
+	height: 150px;
+
+}
+
+.overflow-x {
+
+	overflow-x: auto; 
+	flex-wrap: nowrap; 
+	white-space: nowrap;
+
+}
+
+#playerInput {
+
+	width: 100%;
+
+}
+
+#addBtn {
+
+	background-color: #343a40;
+	border-radius: 20px;
+	color: #FFFFFF;
+
+}
