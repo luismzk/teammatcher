@@ -22,27 +22,31 @@
 <body>
 	{{> header }}
 	<div class="container my-4">
-		<div class="row">
-			<div class="col-12">
-				<div class="landing-container">
-					<div class="row">
-						<div class="col-5 input-container">
-							<input type="text" name="nombre" id="playerInput" placeholder="Jugador...">
-						</div> 
-						<div class="col-2">
-							<select id="level">
-								{{#each levels}}
-							  		<option value="{{this}}">{{this}}</option>
-						  		{{/each}}
-							</select>
-						</div> 
-						<div class="col-5">
-							<div id="addBtn" class="text-center" onclick="addPlayer();">
-								Agregar
-							</div>
-						</div> 
-					</div>
+		<div class="landing-container">
+			<div class="row">
+				<div class="col-12 input-container">
+					El sorteador tratará de sortear todos los nombres suministrados en equipos iguales.
 				</div>
+			</div>
+		</div>
+
+		<div class="landing-container">
+			<div class="row">
+				<div class="col-5 input-container">
+					<input type="text" name="nombre" id="playerInput" placeholder="Jugador...">
+				</div> 
+				<div class="col-2">
+					<select id="level">
+						{{#each levels}}
+					  		<option value="{{this}}">{{this}}</option>
+				  		{{/each}}
+					</select>
+				</div> 
+				<div class="col-5">
+					<div id="addBtn" class="text-center" onclick="addPlayer();">
+						Agregar
+					</div>
+				</div> 
 			</div>
 		</div>
 
@@ -68,9 +72,22 @@
 			</div>
 		</div>
 
+		<div class="row overflow-x mt-3">
+			{{#each teams}}
+				<div class="col-5">
+					<div class="landing-container">
+						<p> Equipo {{this}}</p>
+						<textarea readonly id="level_{{this}}">
+						</textarea>
+					</div>
+				</div>
+			{{/each}}
+		</div>
 	</div> 
 	{{> footer}}
 </body>
+
+<script type="text/javascript" src="js/algorithms.js"></script>
 
 <script type="text/javascript">
 	
@@ -94,12 +111,17 @@
 		{{#each levels}}
 	        var players = $.trim($("#level_{{this}}").val());
 	        if(players != ""){
-	            // Show alert dialog if value is not blank
+	            // Guarda todos los nombres de un nivel en un array
 	        	var players_level_{{this}} = players.split('\n');
-	        	console.log(players_level_{{this}})
 	        }
         {{/each}}
+        //
+    	players_level_1 = shuffleArray(players_level_1);
+        players_level_1.forEach( (play1) => {
 
+        	console.log(play1)
+
+        })
 	}
 </script>
 
