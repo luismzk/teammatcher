@@ -64,6 +64,14 @@ select {
   -ms-overflow-style: none;
 }
 
+.aqua-btn {
+
+	background-color: #6EB5C5;
+	border-radius: 20px;
+	color: #FFFFFF;
+
+}
+
 #playerInput {
 
 	width: 100%;
@@ -77,13 +85,5 @@ select {
 	color: #FFFFFF;
 	height: 100%;
     line-height: 38px;
-
-}
-
-#sortBtn {
-
-	background-color: #6EB5C5;
-	border-radius: 20px;
-	color: #FFFFFF;
 
 }

@@ -22,10 +22,10 @@
 <body>
 	{{> header }}
 	<div class="container my-4">
-		<div class="landing-container">
+		<div class="landing-container mb-3">
 			<div class="row">
 				<div class="col-12 input-container">
-					El sorteador tratará de sortear todos los nombres suministrados en equipos iguales.
+					El sorteador tratará de sortear todos los nombres suministrados en equipos iguales. Por ahora se manejan 3 equipos.
 				</div>
 			</div>
 		</div>
@@ -49,39 +49,50 @@
 				</div> 
 			</div>
 		</div>
-
-		<div class="row overflow-x mt-3">
-			{{#each levels}}
-				<div class="col-5">
-					<div class="landing-container">
-						<p> Nivel {{this}}</p>
-						<textarea readonly id="level_{{this}}">
-						</textarea>
+		<div class="landing-container">
+			<div class="row overflow-x mt-3">
+				{{#each levels}}
+					<div class="col-5">
+						<div class="level-container">
+							<p> Nivel {{this}}</p>
+							<textarea readonly id="level_{{this}}"></textarea>
+						</div>
 					</div>
-				</div>
-			{{/each}}
-		</div>
+				{{/each}}
+			</div>
 
-		<div class="row">
-			<div class="col-12 mr-3">
-				<div class="landing-container mt-2">
-					<div id="sortBtn" class="text-center" onclick="sortTeams();">
-						Sortear!
+			<div class="row">
+				<div class="col-12 mr-3">
+					<div class="landing-container mt-2 aqua-btn">
+						<div id="sortBtn" class="text-center" onclick="sortTeams();">
+							Sortear!
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="row overflow-x mt-3">
-			{{#each teams}}
-				<div class="col-5">
-					<div class="landing-container">
-						<p> Equipo {{this}}</p>
-						<textarea readonly id="level_{{this}}">
-						</textarea>
+		<div class="landing-container collapse" id="teamList">
+			<div class="row overflow-x mt-3">
+				{{#each teams}}
+					<div class="col-5">
+						<div class="team-container">
+							<p> Equipo {{this}}</p>
+							<textarea readonly id="team_{{this}}"></textarea>
+						</div>
+					</div>
+				{{/each}}
+			</div>
+
+			<div class="row">
+				<div class="col-12 mr-3">
+					<div class="landing-container mt-2 aqua-btn">
+						<div id="copyBtn" class="text-center" onclick="copyToClipboard();">
+							Copiar al portapapeles
+						</div>
 					</div>
 				</div>
-			{{/each}}
+			</div>
 		</div>
 	</div> 
 	{{> footer}}
@@ -106,23 +117,150 @@
 
 	}
 
+	function getPlayers(index){
+
+		var players = $.trim($("#level_" + index).val());
+
+        if(players != ""){
+            // Guarda todos los nombres de un nivel en un array
+        	var players_full = players.split('\n');
+
+        }
+
+        return players_full;
+
+	}
+
+    var team1 = [], team2 = [], team3 = [];
+
+
 	function sortTeams(){
 
 		{{#each levels}}
-	        var players = $.trim($("#level_{{this}}").val());
-	        if(players != ""){
-	            // Guarda todos los nombres de un nivel en un array
-	        	var players_level_{{this}} = players.split('\n');
-	        }
+
+        	var players_level_{{this}} = getPlayers( {{this}} )
+
         {{/each}}
         //
-    	players_level_1 = shuffleArray(players_level_1);
-        players_level_1.forEach( (play1) => {
 
-        	console.log(play1)
+        teamNumber = {{teamNumber}};
 
-        })
+        // Reordena los jugadores colocados
+    	/*players_level_1 = shuffleArray(players_level_1);
+        players_level_1.forEach( (play1, index) => {
+
+        	var teamIndex = index % teamNumber;
+
+        	pushToTeam(play1, teamIndex);
+
+        });
+
+    	players_level_2 = shuffleArray(players_level_2);
+        players_level_2.forEach( (play2, index) => {
+
+        	var teamIndex = index % teamNumber;
+
+        	pushToTeam(play2, teamIndex);
+
+        });*/
+        
+		$.post( "/sortTeams", 
+			{ level1: players_level_1, 
+				level2: players_level_2, 
+				level3: players_level_3, 
+				level4: players_level_4, 
+				level5: players_level_5 })
+		  	.done(function( data ) {
+		    	
+		  		data.team1.forEach((team1) => {
+
+		  			$("#team_1").append(team1 + "\n")
+
+		  		})
+
+		  		data.team2.forEach((team2) => {
+
+		  			$("#team_2").append(team2 + "\n")
+
+		  		})
+
+		  		data.team3.forEach((team3) => {
+
+		  			$("#team_3").append(team3 + "\n")
+
+		  		})
+
+		  		$("#teamList").collapse('show');
+
+		  	})
+		  	.fail(function(xhr, textStatus, errorThrown) {
+			    alert( "error" );
+		  	});
+		/*$.ajax({
+		    type: 'post',
+		    url: '/sortTeams',   
+		    data: { level1: players_level_1, 
+				level2: players_level_2, 
+				level3: players_level_3, 
+				level4: players_level_4, 
+				level5: players_level_5 },
+		    xhrFields: {
+		        withCredentials: false
+		    },  
+		    headers: {
+
+		    }, 
+		    success: function (data) {
+		        
+		  		data.team1.forEach((team1) => {
+
+		  			$("#team_1").append(team1 + "\n")
+
+		  		})
+
+		  		data.team2.forEach((team2) => {
+
+		  			$("#team_2").append(team2 + "\n")
+
+		  		})
+
+		  		data.team3.forEach((team3) => {
+
+		  			$("#team_3").append(team3 + "\n")
+
+		  		})
+
+		  		$("#teamList").collapse('show');
+		    },  
+		    error: function () {
+		        alert( "error" );
+		    }
+		})*/
 	}
 </script>
+
+<script>
+	function copyToClipboard(){
+
+		var copyTeam1 = $("#team_1").val();
+		console.log(copyTeam1);
+		var copyTeam2 = $("#team_2").val();
+		var copyTeam3 = $("#team_3").val();
+	    const el = document.createElement('textarea');
+	    el.append("Equipo 1 \n");
+	    el.append(copyTeam1 + "\n");
+	    el.append("Equipo 2 \n");
+	    el.append(copyTeam2 + "\n");
+	    el.append("Equipo 3 \n");
+	    el.append(copyTeam3 + "\n");
+	    document.body.appendChild(el);
+	    el.select();
+	    document.execCommand('copy');
+	    document.body.removeChild(el);
+	    $('[data-toggle="tooltip"]').tooltip();
+
+  	}
+</script>
+
 
 </html>
