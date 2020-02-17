@@ -24,14 +24,21 @@ router.get('/', async function (req, res) {
 });
 
 router.post('/sortTeams', async function (req, res) {
-  try {
-    var array1 = ["a"];
-    var array2 = ["b"];
-    var array3 = ["c"];
-    console.log(req.body);
-    
-    res.send({ team1: array1, team2: array2, team3: array3 });
 
+  try {
+
+    var array1 = ["a"];
+    var array2 = ["b", "d"];
+    var array3 = ["c"];
+
+    // Array con arrays, aqui se guardaran todos los equipos
+    var teamArray = [ array1, array2, array3];
+
+    // Sorteará los equipos para tener los que tengan menos integrantes de primero y llenarlos
+    teamArray.sort((a, b) => Number(a.length) - Number(b.length));
+
+    console.log(teamArray);
+    res.send({ team1: array1, team2: array2, team3: array3 });
 
   } catch (e) {
 
@@ -39,6 +46,7 @@ router.post('/sortTeams', async function (req, res) {
     res.sendStatus(500);
 
   }
+
 });
 
 

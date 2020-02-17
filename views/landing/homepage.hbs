@@ -55,7 +55,7 @@
 					<div class="col-5">
 						<div class="level-container">
 							<p> Nivel {{this}}</p>
-							<textarea readonly id="level_{{this}}"></textarea>
+							<textarea readonly id="level_{{this}}" onclick="getLine({{sum @index 1}});"></textarea>
 						</div>
 					</div>
 				{{/each}}
@@ -101,7 +101,19 @@
 <script type="text/javascript" src="js/algorithms.js"></script>
 
 <script type="text/javascript">
-	
+
+	function getLine(index){
+
+	    var t = $("#level_" + index)[0]; 
+	    
+	    let rowNumber = t.value.substr(0, t.selectionStart).split("\n").length;
+
+	//do something with the selected line t.value.split("\n")[rowNumber-1]
+	    console.log(t.value.split("\n")[rowNumber-1]);
+	    alert(t.value.split("\n")[rowNumber-1]);
+
+	}
+
 	function addPlayer(){
 
 		var player_name = $("#playerInput").val();
@@ -163,7 +175,7 @@
         	pushToTeam(play2, teamIndex);
 
         });*/
-        
+
 		$.post( "/sortTeams", 
 			{ level1: players_level_1, 
 				level2: players_level_2, 
@@ -171,7 +183,7 @@
 				level4: players_level_4, 
 				level5: players_level_5 })
 		  	.done(function( data ) {
-		    	
+
 		  		data.team1.forEach((team1) => {
 
 		  			$("#team_1").append(team1 + "\n")
@@ -196,46 +208,6 @@
 		  	.fail(function(xhr, textStatus, errorThrown) {
 			    alert( "error" );
 		  	});
-		/*$.ajax({
-		    type: 'post',
-		    url: '/sortTeams',   
-		    data: { level1: players_level_1, 
-				level2: players_level_2, 
-				level3: players_level_3, 
-				level4: players_level_4, 
-				level5: players_level_5 },
-		    xhrFields: {
-		        withCredentials: false
-		    },  
-		    headers: {
-
-		    }, 
-		    success: function (data) {
-		        
-		  		data.team1.forEach((team1) => {
-
-		  			$("#team_1").append(team1 + "\n")
-
-		  		})
-
-		  		data.team2.forEach((team2) => {
-
-		  			$("#team_2").append(team2 + "\n")
-
-		  		})
-
-		  		data.team3.forEach((team3) => {
-
-		  			$("#team_3").append(team3 + "\n")
-
-		  		})
-
-		  		$("#teamList").collapse('show');
-		    },  
-		    error: function () {
-		        alert( "error" );
-		    }
-		})*/
 	}
 </script>
 
