@@ -88,7 +88,7 @@
 				<div class="col-12 mr-3">
 					<div class="landing-container mt-2 aqua-btn">
 						<div id="copyBtn" class="text-center" onclick="copyToClipboard();">
-							Copiar al portapapeles
+							Copiar equipos
 						</div>
 					</div>
 				</div>
@@ -176,7 +176,7 @@
 
         });*/
 
-		$.post( "/sortTeams", 
+		$.get( "/sortTeams", 
 			{ level1: players_level_1, 
 				level2: players_level_2, 
 				level3: players_level_3, 
@@ -206,7 +206,7 @@
 
 		  	})
 		  	.fail(function(xhr, textStatus, errorThrown) {
-			    alert( "error" );
+			    alert( "error sorteando equipos. Error " + errorThrown );
 		  	});
 	}
 </script>

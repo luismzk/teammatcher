@@ -54,16 +54,6 @@ select {
 
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.overflow-x::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE and Edge */
-.overflow-x {
-  -ms-overflow-style: none;
-}
-
 .aqua-btn {
 
 	background-color: #6EB5C5;
