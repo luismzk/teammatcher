@@ -1,6 +1,8 @@
 const express = require('express');
 var router = express.Router();
 
+var algorithms = require('../../js/algorithms');
+
 router.get('/sortTeams', async function (req, res) {
 
   try {
@@ -21,34 +23,71 @@ router.get('/sortTeams', async function (req, res) {
 
 function teamSorter(level1, level2, level3, level4, level5){
 
-    var array1 = ["a"];
-    var array2 = ["b", "d"];
-    var array3 = ["c"];
-    // Array con arrays, aqui se guardaran todos los equipos
-    var teamArray = [ array1, array2, array3];
 
-    // Sorteará los equipos para tener los que tengan menos integrantes de primero y llenarlos
-    teamArray.sort((a, b) => Number(a.length) - Number(b.length));
+  // Array con arrays, aqui se guardaran todos los equipos
+  var teamArray = [ [], [], [] ];
 
-    console.log(teamArray);
+  teamArray = sortPlayers(level1, teamArray);
+  
+  // Sorteará los equipos para tener los que tengan menos integrantes de primero y llenarlos
+  teamArray.sort((a, b) => Number(a.length) - Number(b.length));
 
-    return teamArray;
+  teamArray = sortPlayers(level2, teamArray);
+  
+  // Sorteará los equipos para tener los que tengan menos integrantes de primero y llenarlos
+  teamArray.sort((a, b) => Number(a.length) - Number(b.length));
+
+  teamArray = sortPlayers(level3, teamArray);
+  
+  // Sorteará los equipos para tener los que tengan menos integrantes de primero y llenarlos
+  teamArray.sort((a, b) => Number(a.length) - Number(b.length));
+
+  teamArray = sortPlayers(level4, teamArray);
+  
+  // Sorteará los equipos para tener los que tengan menos integrantes de primero y llenarlos
+  teamArray.sort((a, b) => Number(a.length) - Number(b.length));
+
+  teamArray = sortPlayers(level5, teamArray);
+  
+  // Sorteará los equipos para tener los que tengan menos integrantes de primero y llenarlos
+  teamArray.sort((a, b) => Number(a.length) - Number(b.length));
+
+  console.log(teamArray);
+
+  return teamArray;
 
 }
 
-function pushToTeam(player, teamIndex){
+function sortPlayers(level, teamArray){
 
-    switch (teamIndex){
-      case 0:
-        team1.push(player);
-        break;
-      case 1:
-        team2.push(player);
-        break;
-      case 2:
-        team3.push(player);
-        break;
-    }
+  // Arrays de equipos para llenar con jugadores
+  var team1 = teamArray[0];
+  var team2 = teamArray[1];
+  var team3 = teamArray[2];
+
+  if (level){
+    console.log(level, "pre")
+    // Randomiza el orden del array para repartir
+    level = algorithms.shuffleArray(level)
+    console.log(level, "post")
+
+    level.forEach( (lev, index) => {
+      switch(index % 3){
+        case 0:
+          team1.push(lev);
+          break;
+        case 1:
+          team2.push(lev);
+          break;
+        case 2:
+          team3.push(lev);
+          break;
+      }
+    })
+
+  }
+
+  return [team1, team2, team3]
 
 }
 

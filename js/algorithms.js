@@ -13,3 +13,9 @@ function shuffleArray(array) {
 
     return array;
 }
+
+module.exports = {
+
+    shuffleArray
+
+}

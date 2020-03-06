@@ -98,8 +98,6 @@
 	{{> footer}}
 </body>
 
-<script type="text/javascript" src="js/algorithms.js"></script>
-
 <script type="text/javascript">
 
 	function getLine(index){
@@ -214,22 +212,40 @@
 <script>
 	function copyToClipboard(){
 
-		var copyTeam1 = $("#team_1").val();
-		console.log(copyTeam1);
-		var copyTeam2 = $("#team_2").val();
-		var copyTeam3 = $("#team_3").val();
-	    const el = document.createElement('textarea');
-	    el.append("Equipo 1 \n");
-	    el.append(copyTeam1 + "\n");
-	    el.append("Equipo 2 \n");
-	    el.append(copyTeam2 + "\n");
-	    el.append("Equipo 3 \n");
-	    el.append(copyTeam3 + "\n");
-	    document.body.appendChild(el);
-	    el.select();
-	    document.execCommand('copy');
-	    document.body.removeChild(el);
-	    $('[data-toggle="tooltip"]').tooltip();
+		var emojiArray = ["😈","🖤","💛","💙","💜","💚","🧡","❤️️","👽","👩‍🦲️","🦶️","🧛","👁","🧙‍♂️","🧓","👺"]
+
+		try {
+
+			var copyTeam1 = $("#team_1").val();
+			var copyTeam2 = $("#team_2").val();
+			var copyTeam3 = $("#team_3").val();
+		    const el = document.createElement('textarea');
+
+		    var random = Math.floor( Math.random() * emojiArray.length )
+		    el.append("Equipo "+ emojiArray[random] +"\n");
+		    el.append(copyTeam1 + "\n");
+
+		    random = Math.floor( Math.random() * emojiArray.length )
+		    el.append("Equipo "+ emojiArray[random] +"\n");
+		    el.append(copyTeam2 + "\n");
+
+		    random = Math.floor( Math.random() * emojiArray.length )
+		    el.append("Equipo "+ emojiArray[random] +"\n");
+		    el.append(copyTeam3 + "\n");
+
+		    document.body.appendChild(el);
+		    el.select();
+		    document.execCommand('copy');
+		    document.body.removeChild(el);
+		    $('[data-toggle="tooltip"]').tooltip();
+		    alert("Equipos copiados con éxito!")
+
+		} catch (e){
+
+			alert("Error en la copia de texto! " + e)
+
+		}
+
 
   	}
 </script>
