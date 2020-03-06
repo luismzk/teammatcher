@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>TeamMatcher</title>
+	<link rel="icon" type="image/png">
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<!-- load bootstrap css -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<!-- load fontawesome -->
+	
+	<link rel="stylesheet" href="/css/main.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+		crossorigin="anonymous"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+	{{> header }}
+	<div class="container my-4">
+		<div class="landing-container mb-3">
+			<div class="row">
+				<div class="col-12 input-container">
+					El sorteador tratará de sortear todos los nombres suministrados en equipos iguales. Por ahora se manejan 3 equipos.
+				</div>
+			</div>
+		</div>
+
+		<div class="landing-container">
+			<div class="row">
+				<div class="col-5 input-container">
+					<input type="text" name="nombre" id="playerInput" placeholder="Jugador...">
+				</div> 
+				<div class="col-2">
+					<select id="level">
+						{{#each levels}}
+					  		<option value="{{this}}">{{this}}</option>
+				  		{{/each}}
+					</select>
+				</div> 
+				<div class="col-5">
+					<div id="addBtn" class="text-center" onclick="addPlayer();">
+						Agregar
+					</div>
+				</div> 
+			</div>
+		</div>
+		<div class="landing-container">
+			<div class="row overflow-x mt-3">
+				{{#each levels}}
+					<div class="col-5">
+						<div class="level-container">
+							<p> Nivel {{this}}</p>
+							<textarea readonly id="level_{{this}}" onclick="getLine({{sum @index 1}});"></textarea>
+						</div>
+					</div>
+				{{/each}}
+			</div>
+
+			<div class="row">
+				<div class="col-12 mr-3">
+					<div class="landing-container mt-2 aqua-btn">
+						<div id="sortBtn" class="text-center" onclick="sortTeams();">
+							Sortear!
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="landing-container collapse" id="teamList">
+			<div class="row overflow-x mt-3">
+				{{#each teams}}
+					<div class="col-5">
+						<div class="team-container">
+							<p> Equipo {{this}}</p>
+							<textarea readonly id="team_{{this}}"></textarea>
+						</div>
+					</div>
+				{{/each}}
+			</div>
+
+			<div class="row">
+				<div class="col-12 mr-3">
+					<div class="landing-container mt-2 aqua-btn">
+						<div id="copyBtn" class="text-center" onclick="copyToClipboard();">
+							Copiar equipos
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+	{{> footer}}
+</body>
+
+<script type="text/javascript">
+
+	function getLine(index){
+
+	    var t = $("#level_" + index)[0]; 
+	    
+	    let rowNumber = t.value.substr(0, t.selectionStart).split("\n").length;
+
+	//do something with the selected line t.value.split("\n")[rowNumber-1]
+	    console.log(t.value.split("\n")[rowNumber-1]);
+	    alert(t.value.split("\n")[rowNumber-1]);
+
+	}
+
+	function addPlayer(){
+
+		var player_name = $("#playerInput").val();
+		var level = $("#level").val()
+
+		if (player_name == "") {
+
+			return alert("El nombre no puede ser vacío.")
+
+		}
+
+		$("#level_" + level).append(player_name + "\n")
+
+	}
+
+	function getPlayers(index){
+
+		var players = $.trim($("#level_" + index).val());
+
+        if(players != ""){
+            // Guarda todos los nombres de un nivel en un array
+        	var players_full = players.split('\n');
+
+        }
+
+        return players_full;
+
+	}
+
+    var team1 = [], team2 = [], team3 = [];
+
+
+	function sortTeams(){
+
+		{{#each levels}}
+
+        	var players_level_{{this}} = getPlayers( {{this}} )
+
+        {{/each}}
+        //
+
+        teamNumber = {{teamNumber}};
+
+        // Reordena los jugadores colocados
+    	/*players_level_1 = shuffleArray(players_level_1);
+        players_level_1.forEach( (play1, index) => {
+
+        	var teamIndex = index % teamNumber;
+
+        	pushToTeam(play1, teamIndex);
+
+        });
+
+    	players_level_2 = shuffleArray(players_level_2);
+        players_level_2.forEach( (play2, index) => {
+
+        	var teamIndex = index % teamNumber;
+
+        	pushToTeam(play2, teamIndex);
+
+        });*/
+
+		$.get( "/sortTeams", 
+			{ level1: players_level_1, 
+				level2: players_level_2, 
+				level3: players_level_3, 
+				level4: players_level_4, 
+				level5: players_level_5 })
+		  	.done(function( data ) {
+
+		  		data.team1.forEach((team1) => {
+
+		  			$("#team_1").append(team1 + "\n")
+
+		  		})
+
+		  		data.team2.forEach((team2) => {
+
+		  			$("#team_2").append(team2 + "\n")
+
+		  		})
+
+		  		data.team3.forEach((team3) => {
+
+		  			$("#team_3").append(team3 + "\n")
+
+		  		})
+
+		  		$("#teamList").collapse('show');
+
+		  	})
+		  	.fail(function(xhr, textStatus, errorThrown) {
+			    alert( "error sorteando equipos. Error " + errorThrown );
+		  	});
+	}
+</script>
+
+<script>
+	function copyToClipboard(){
+
+		var emojiArray = ["😈","🖤","💛","💙","💜","💚","🧡","❤️️","👽","👩‍🦲️","🦶️","🧛","👁","🧙‍♂️","🧓","👺"]
+
+		try {
+
+			var copyTeam1 = $("#team_1").val();
+			var copyTeam2 = $("#team_2").val();
+			var copyTeam3 = $("#team_3").val();
+		    const el = document.createElement('textarea');
+
+		    var random = Math.floor( Math.random() * emojiArray.length )
+		    el.append("Equipo "+ emojiArray[random] +"\n");
+		    el.append(copyTeam1 + "\n");
+
+		    random = Math.floor( Math.random() * emojiArray.length )
+		    el.append("Equipo "+ emojiArray[random] +"\n");
+		    el.append(copyTeam2 + "\n");
+
+		    random = Math.floor( Math.random() * emojiArray.length )
+		    el.append("Equipo "+ emojiArray[random] +"\n");
+		    el.append(copyTeam3 + "\n");
+
+		    document.body.appendChild(el);
+		    el.select();
+		    document.execCommand('copy');
+		    document.body.removeChild(el);
+		    $('[data-toggle="tooltip"]').tooltip();
+		    alert("Equipos copiados con éxito!")
+
+		} catch (e){
+
+			alert("Error en la copia de texto! " + e)
+
+		}
+
+
+  	}
+</script>
+
+
+</html>
