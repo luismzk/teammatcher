@@ -52,8 +52,6 @@ function teamSorter(level1, level2, level3, level4, level5){
   // Sorteará los equipos para tener los que tengan menos integrantes de primero y llenarlos
   teamArray.sort((a, b) => Number(a.length) - Number(b.length));
 
-  console.log(teamArray);
-
   return teamArray;
 
 }
@@ -66,10 +64,9 @@ function sortPlayers(level, teamArray){
   var team3 = teamArray[2];
 
   if (level){
-    console.log(level, "pre")
+
     // Randomiza el orden del array para repartir
     level = algorithms.shuffleArray(level)
-    console.log(level, "post")
 
     level.forEach( (lev, index) => {
       switch(index % 3){
