@@ -142,6 +142,15 @@
 
     var team1 = [], team2 = [], team3 = [];
 
+    function checkEmpty(players){
+
+    	if (!players){
+    		return true
+    	} else {
+    		return false
+    	}
+
+    }
 
 	function sortTeams(){
 
@@ -151,7 +160,12 @@
 
         {{/each}}
         //
+        
+        if (checkEmpty(players_level_1) && checkEmpty(players_level_2) && checkEmpty(players_level_3) && checkEmpty(players_level_4) && checkEmpty(players_level_5) ){
 
+        	return alert("Debe haber al menos un jugador para sortear.")
+
+        }
         teamNumber = {{teamNumber}};
 
 		$.get( "/sortTeams", 
@@ -165,7 +179,7 @@
 		        $("#team_1").text("")
 		        $("#team_2").text("")
 		        $("#team_3").text("")
-		        
+
 		  		data.team1.forEach((team1) => {
 
 		  			$("#team_1").append(team1 + "\n")

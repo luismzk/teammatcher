@@ -20,9 +20,8 @@ router.get('/sortTeams', async function (req, res) {
 
 });
 
-
+// Funcion principal para sortear los equipos, crea el array que se devuelve al front
 function teamSorter(level1, level2, level3, level4, level5){
-
 
   // Array con arrays, aqui se guardaran todos los equipos
   var teamArray = [ [], [], [] ];
@@ -56,6 +55,7 @@ function teamSorter(level1, level2, level3, level4, level5){
 
 }
 
+// Sortea los jugadores en los equipos
 function sortPlayers(level, teamArray){
 
   // Arrays de equipos para llenar con jugadores
