@@ -2,6 +2,16 @@
 <html>
 
 <head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-160180229-1"></script>
+	<script>
+	  	window.dataLayer = window.dataLayer || [];
+	  	function gtag(){dataLayer.push(arguments);}
+	  	gtag('js', new Date());
+
+	  	gtag('config', 'UA-160180229-1');
+	</script>
+
 	<title>TeamMatcher</title>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
@@ -160,12 +170,13 @@
 
         {{/each}}
         //
-        
+
         if (checkEmpty(players_level_1) && checkEmpty(players_level_2) && checkEmpty(players_level_3) && checkEmpty(players_level_4) && checkEmpty(players_level_5) ){
 
         	return alert("Debe haber al menos un jugador para sortear.")
 
         }
+
         teamNumber = {{teamNumber}};
 
 		$.get( "/sortTeams", 
