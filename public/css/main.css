@@ -12,6 +12,16 @@ select {
 	height: 100%;
 
 }
+
+ /* https://stackoverflow.com/questions/11497094/remove-border-from-buttons */
+button {
+
+	padding: 0;
+	border: none;
+	background: none;
+
+}
+
 .overflow-x {
 
 	overflow-x: auto; 
@@ -53,27 +63,48 @@ select {
  border-bottom:1px solid #e74c3c;
 
 }
-
+/*
 .aqua-btn {
 
 	background-color: #6EB5C5;
 	border-radius: 20px;
 	color: #FFFFFF;
 
-}
+}*/
 
-#playerInput {
+.btn {
 
+	padding: 0;
+	height: 100%;
 	width: 100%;
-
+    line-height: 38px;
+	border-radius: 20px;
+	
 }
 
-#addBtn {
+.dark-btn {
 
 	background-color: #343a40;
-	border-radius: 20px;
 	color: #FFFFFF;
-	height: 100%;
-    line-height: 38px;
+
+}
+
+.white-btn {
+
+	background-color: #c2c2c2;
+	color: #000000;
+
+}
+
+.aqua-btn {
+
+	background-color: #6EB5C5;
+	color: #FFFFFF;
+
+}
+
+#player-input {
+
+	width: 100%;
 
 }
