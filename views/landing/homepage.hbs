@@ -36,7 +36,7 @@
 			{{#each levels}}
 				<div class="flex-column">
 					<div class="level-container">
-						<p> Equipo {{this}}</p>
+						<p> Nivel {{this}}</p>
 						<textarea readonly id="level{{this}}" class="player-text-area"></textarea>
 					</div>
 				</div>
@@ -55,7 +55,7 @@
 			{{#each teams}}
 				<div class="flex-column">
 					<div class="team-container">
-						<p> Nivel {{this}}</p>
+						<p> Equipo {{this}}</p>
 						<textarea readonly id="team{{this}}" class="team-text-area"></textarea>
 					</div>
 				</div>
@@ -77,6 +77,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
+{{!-- script de funciones de jugadores --}}
 <script type="text/javascript">
 
 	function removePlayer(line, textArea) {
@@ -138,6 +139,7 @@
 			})
 
 		$("#level" + level).append(playerName + "\n")
+		updateCookie(level, playerName);
 
 	})
 
@@ -146,11 +148,9 @@
 
 		var players = $.trim($("#level" + index).val());
 
-    if(players != ""){
-      // Guarda todos los nombres de un nivel en un array
+    // Guarda todos los nombres de un nivel en un array
+    if(players != "")
     	var players_full = players.split('\n');
-
-    }
 
     return players_full;
 
@@ -216,10 +216,10 @@
 			  confirmButtonText: 'Volver'
 			})
   	});
-	})
+	});
+</script>
 
-</script>//
-
+{{!-- script para copiar al portapapeles --}}
 <script>
 	$("#copyToClipboardBtn").click(function (){
 
@@ -268,7 +268,105 @@
 		}
 
 
-  })
+  });
+</script>
+
+{{!-- script para la cookie --}}
+<script>
+	$(document).ready(function (){
+
+		if ( getCookie("level1") || getCookie("level2") || 
+			getCookie("level3") || getCookie("level4") || 
+			getCookie("level5") )
+		  return Swal.fire({
+			  title: 'Hola!',
+			  text: "Vemos que has estado aqui antes, deseas cargar tus jugadores anteriores?",
+			  icon: 'info',
+			  confirmButtonText: 'Si!',
+			  confirmButtonColor: "#16A116",
+			  showDenyButton: true,
+			  denyButtonText: "Nope"
+			}).then( (SweetAlertResult) => {
+				if (SweetAlertResult.isConfirmed)
+					loadCookiePlayers()
+				else if (SweetAlertResult.isDenied){
+					// si no quiere cargar los previos, reinicia la cookie
+					document.cookie = "level1=;";
+					document.cookie = "level2=;";
+					document.cookie = "level3=;";
+					document.cookie = "level4=;";
+					document.cookie = "level5=;";
+				}
+			})
+  });
+
+	// https://www.w3schools.com/js/js_cookies.asp
+	// busca el atributo de una cookie con el nombre
+  function getCookie(cname) {
+	  var name = cname + "=";
+	  var decodedCookie = decodeURIComponent(document.cookie);
+	  var ca = decodedCookie.split(';');
+	  for(var i = 0; i <ca.length; i++) {
+
+	    var c = ca[i];
+
+	    while (c.charAt(0) == ' ')
+	      c = c.substring(1);
+	    
+	    if (c.indexOf(name) == 0)
+	      return c.substring(name.length, c.length);
+	    
+	  }
+	  return "";
+	}
+
+	// agrega los jugadores a la cookie
+	// exDays es dias para que expire la galleta. 3 semanas por defecto
+	function updateCookie(exDays = 21) {
+	  var d = new Date();
+	  d.setTime(d.getTime() + (exDays*24*60*60*1000));
+	  var expires = "expires="+ d.toUTCString();
+
+	  for (var i = 1; i <= 5; i++ ){
+	  	// todos los jugadores de ese nivel
+	  	var players = getPlayers( i )
+
+		  let cookiePlayers = "";
+		  if (players)
+		  	players.forEach( play => cookiePlayers += play + ",")
+		  // elimino la coma del ultimo jugador
+		  cookiePlayers = cookiePlayers.slice(0, -1)
+
+		  document.cookie = "level" + i + "=" + cookiePlayers + ";" + expires + ";path=/";
+
+	  }
+	  // actualizo la expiracion de la cookie
+		document.cookie = expires;
+		
+	}
+
+	// carga los jugadores de la cookie a los textarea
+	function loadCookiePlayers(){
+
+		// revisa los 5 niveles
+		for (var i = 1; i <= 5; i++){
+			// busca los jugadores de un nivel en la cookie
+			var players = getCookie("level" + i)
+			// si hay jugadores, carga
+			if (players){
+				// separa por la coma que separa los jugadores
+				playersArray = players.split(",")
+				// agrega los jugadores al textarea
+				for (var j = 0; j < playersArray.length; j++)
+					$("#level" + i).append(playersArray[j] + "\n")
+
+			}
+		}
+
+		updateCookie()
+
+	}
+
 </script>
 
 
