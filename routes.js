@@ -6,7 +6,7 @@ module.exports = (app, passport) => {
 
 
   app.use(require('./routes/landing/homepage'));
-  app.use(require('./routes/team_handler/team_sorting'));
+  app.use(require('./routes/team_handler/sort'));
 
 
 }

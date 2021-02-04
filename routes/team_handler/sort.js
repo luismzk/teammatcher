@@ -1,7 +1,7 @@
 const express = require('express');
 var router = express.Router();
 
-var algorithms = require('../../js/algorithms');
+const { shuffleArray } = require('../../utilities');
 
 router.get('/sortTeams', async function (req, res) {
 
@@ -66,7 +66,7 @@ function sortPlayers(level, teamArray){
   if (level){
 
     // Randomiza el orden del array para repartir
-    level = algorithms.shuffleArray(level)
+    level = shuffleArray(level)
 
     level.forEach( (lev, index) => {
       switch(index % 3){
