@@ -70,6 +70,16 @@
 			</div>
 		</div>
 
+		<div class="flex-row" id="supportRow">
+			<div class="flex-column">
+				<span>
+						Tienes alguna sugerencia para mejorar la página o quieres reportar un error?<br> 
+						Puedes escribirme @pulga1094 o ver el repositorio <a href="https://github.com/luismzk/teammatcher">Github</a> para reportar un issue.<br>
+						Diviértanse!
+				</span>
+			</div>
+		</div>
+
 	</div> 
 	{{> footer}}
 
@@ -293,11 +303,7 @@
 					loadCookiePlayers()
 				else if (SweetAlertResult.isDenied){
 					// si no quiere cargar los previos, reinicia la cookie
-					document.cookie = "level1=;";
-					document.cookie = "level2=;";
-					document.cookie = "level3=;";
-					document.cookie = "level4=;";
-					document.cookie = "level5=;";
+					updateCookie()
 				}
 			})
   });

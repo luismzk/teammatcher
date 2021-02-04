@@ -3,6 +3,7 @@
 html, body {
 	font-family: 'Roboto', sans-serif;
 	font-weight: 400;
+	font-size: 16px;
 }
 
 textarea {
@@ -153,6 +154,15 @@ input:focus{
 #copyTeamsRow {
 	display: none;
 }
-#copyTeamsRow > .flex-column{
+#copyTeamsRow > .flex-column,
+#supportRow > .flex-column {
 	flex-grow: 1;
+}
+
+#supportRow {
+	font-weight: 700;
+	color: #A3ADB5;
+	font-style: italic;
+	text-align: center;
+	font-size: 14px;
 }
