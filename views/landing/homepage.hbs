@@ -273,8 +273,10 @@
 
 {{!-- script para la cookie --}}
 <script>
+
 	$(document).ready(function (){
 
+		// si existe informacion de niveles en la cookie, pregunta si quiere cargar gente
 		if ( getCookie("level1") || getCookie("level2") || 
 			getCookie("level3") || getCookie("level4") || 
 			getCookie("level5") )
@@ -342,7 +344,7 @@
 	  }
 	  // actualizo la expiracion de la cookie
 		document.cookie = expires;
-		
+
 	}
 
 	// carga los jugadores de la cookie a los textarea
