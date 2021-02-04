@@ -3,8 +3,7 @@
 html, body {
 	font-family: 'Roboto', sans-serif;
 	font-weight: 400;
-	font-size: 18px;
-	margin: 0;
+	font-size: 16px;
 }
 
 textarea {
@@ -85,24 +84,17 @@ button {
 	padding: 0;
 	border: none;
 	background: none;
+
+}
+
+.btn {
+
+	padding: 0;
 	height: 100%;
 	width: 100%;
 	font-weight: 600;
   line-height: 38px;
 	border-radius: 20px;
-	font-size: 16px;
-	font-family: 'Roboto', sans-serif;
-
-	display: inline-block;
-	white-space: nowrap;
-	vertical-align: middle;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-	text-align: center;
-	cursor: pointer;
 
 }
 
