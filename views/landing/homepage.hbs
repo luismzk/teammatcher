@@ -1,329 +1,274 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-160180229-1"></script>
-	<script>
-	  	window.dataLayer = window.dataLayer || [];
-	  	function gtag(){dataLayer.push(arguments);}
-	  	gtag('js', new Date());
-
-	  	gtag('config', 'UA-160180229-1');
-	</script>
-
-	<title>TeamMatcher</title>
-
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-	<!-- load bootstrap css -->
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-	<!-- load fontawesome -->
-	
-	<link rel="stylesheet" href="/css/main.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-		integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-		crossorigin="anonymous"></script>
-
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
+{{> headerMeta}}
 
 <body>
 	{{> header }}
-	<div class="container my-3">
-		<div class="landing-container mb-3">
-			<div class="row">
-				<div class="col-12 input-container">
-					El sorteador tratará de sortear todos los nombres suministrados en equipos iguales. Por ahora se manejan 3 equipos.<br>
-					Puedes tocar una persona para eliminarla del sorteo.
-				</div>
+	<div id="mainContainer">
+
+		<div class="flex-row">
+			<div class="flex-column">
+				El sorteador tratará de sortear todos los nombres suministrados en equipos iguales. Por ahora se manejan 3 equipos.<br>
+				Puedes tocar una persona para eliminarla del sorteo.
 			</div>
 		</div>
 
-		<div class="landing-container">
-			<div class="row">
-				<div class="col-5 input-container">
-					<input type="text" name="nombre" id="player-input" placeholder="Jugador...">
-				</div> 
-				<div class="col-2">
-					<select id="level">
-						{{#each levels}}
-					  		<option value="{{this}}">{{this}}</option>
-				  		{{/each}}
-					</select>
-				</div> 
-				<div class="col-5">
-					<button id="dark-btn" class="btn dark-btn text-center" onclick="addPlayer();">
-						Agregar
-					</button>
-				</div> 
+		<div class="flex-row" id="playerInputRow">
+			<div class="flex-column">
+				<input type="text" name="nombre" id="playerInput" placeholder="Jugador...">
 			</div>
+			<div class="flex-column">
+				<select id="level">
+					{{#each levels}}
+				  		<option value="{{this}}">{{this}}</option>
+			  		{{/each}}
+				</select>
+			</div>
+			<div class="flex-column">
+				<button id="addPlayerBtn" class="btn dark-btn text-center">
+					Agregar
+				</button>
+			</div> 
 		</div>
-		<div class="landing-container">
-			<div class="row overflow-x mt-3">
-				{{#each levels}}
-					<div class="col-5">
-						<div class="level-container">
-							<p> Nivel {{this}}</p>
-							<textarea readonly id="level_{{this}}" onclick="getLine({{sum @index 1}})"></textarea>
-						</div>
-					</div>
-				{{/each}}
-			</div>
 
-			<div class="row">
-				<div class="col-12 mr-3">
-					<div class="landing-container mt-2">
-						<button id="aqua-btn" class="btn aqua-btn text-center" onclick="sortTeams();">
-							Sortear!
-						</button>
+		<div class="flex-row overflow-x" id="levelContainerRow">
+			{{#each levels}}
+				<div class="flex-column">
+					<div class="level-container">
+						<p> Equipo {{this}}</p>
+						<textarea readonly id="level{{this}}" class="player-text-area"></textarea>
 					</div>
 				</div>
+			{{/each}}
+		</div>
+
+		<div class="flex-row" id="sortBtnRow">
+			<div class="flex-column">
+				<button id="sortPlayersBtn" class="btn aqua-btn">
+					Sortear!
+				</button>
 			</div>
 		</div>
 
-		<div class="landing-container collapse" id="teamList">
-			<div class="row overflow-x mt-3">
-				{{#each teams}}
-					<div class="col-5">
-						<div class="team-container">
-							<p> Equipo {{this}}</p>
-							<textarea readonly id="team_{{this}}"></textarea>
-						</div>
-					</div>
-				{{/each}}
-			</div>
-
-			<div class="row">
-				<div class="col-12 mr-3">
-					<div class="landing-container mt-2">
-						<button id="aqua-btn" class="btn aqua-btn text-center" onclick="copyToClipboard();">
-							Copiar equipos
-						</button>
+		<div class="flex-row overflow-x" id="sortedTeamsRow">
+			{{#each teams}}
+				<div class="flex-column">
+					<div class="team-container">
+						<p> Nivel {{this}}</p>
+						<textarea readonly id="team{{this}}" class="team-text-area"></textarea>
 					</div>
 				</div>
+			{{/each}}
+		</div>
+
+		<div class="flex-row" id="copyTeamsRow">
+			<div class="flex-column">
+				<button id="copyToClipboardBtn" class="btn aqua-btn">
+					Copiar equipos
+				</button>
 			</div>
 		</div>
+
 	</div> 
 	{{> footer}}
 
-	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
-	  	<div class="modal-dialog" role="document">
-	    	<div class="modal-content">
-		      	<div class="modal-header">
-		        	<h5 class="modal-title">Eliminar jugador</h5>
-		        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          	<span aria-hidden="true">&times;</span>
-		        	</button>
-		      	</div>
-		      	<div class="modal-body delete-modal-body">
-		        	<p>Error cargando modal.</p>
-		      	</div>
-		      	<div class="modal-footer">
-		        	<button type="button" class="btn btn-danger" id="delete-btn" data-dismiss="modal">Eliminar</button>
-		        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-		      	</div>
-	    	</div>
-	  	</div>
-	</div>
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script type="text/javascript">
 
-	$("#delete-btn").click(function() {
+	function removePlayer(line, textArea) {
 
-		var player = $(this).data('player');
-		var index = $(this).data('index');
+    let t = $(textArea)[0]; 
+    // los jugadores en el nivel seleccionado
+    let players = t.value.split("\n");
+		// elimina el jugador seleccionado
+		players.splice(line,1)
+		// vacia el text area
+    $(textArea).text("")
+    // quita espacios vacios del array (no se porque pasan)
+    players = players.filter( (play) => play)
 
-	    var t = $("#level_" + index)[0]; 
-	    let selected = t.value.split("\n");
+    // repopula el text area
+		players.forEach((rem) => $(textArea).append(rem + "\n") )
 
-		for (var i = 0; i < selected.length; i++){
+	};
 
-			if (selected[i] == player){
+	$(".player-text-area").click(function (){
 
-				var removed = selected.splice(i,1)
-				console.log("Eliminado", removed)
-				break;
+    var t = $(this)[0]; 
+    // la fila que toca
+    let rowNumber = t.value.substr(0, t.selectionStart).split("\n").length;
 
-			}
+		// el valor de la linea seleccionada
+    let selected = t.value.split("\n")[rowNumber-1];
+    // si el campo tiene texto
+    if (selected != ""){
 
-		}
-		
-        $("#level_" + index).text("")
-
-		selected.forEach((rem) => {
-
-			if (rem != "")
-				$("#level_" + index).append(rem + "\n")
-
-		})
-
-	});
-
-	function getLine(index){
-
-	    var t = $("#level_" + index)[0]; 
-	    
-	    let rowNumber = t.value.substr(0, t.selectionStart).split("\n").length;
-
-		//do something with the selected line t.value.split("\n")[rowNumber-1]
-	    let selected = t.value.split("\n")[rowNumber-1];
-
-	    if (selected != ""){
-
-	        $('#deleteModal').on('show.bs.modal', function (event) {
-
-	          var modal = $(this)
-	          modal.find("#delete-btn").data("player", selected)
-	          modal.find("#delete-btn").data("index", index)
-	          modal.find('.delete-modal-body').text('Eliminar al jugador ' + selected + "?")
-
-	        })
-
-		    $('#deleteModal').modal('show');
+		  return Swal.fire({
+			  title: 'Cuidado!',
+			  text: "Eliminar al jugador " + selected + "?",
+			  icon: 'question',
+			  confirmButtonText: 'Eliminar',
+			  confirmButtonColor: "#16A116",
+			  showDenyButton: true,
+			  denyButtonText: "Volver"
+			}).then( (SweetAlertResult) => {
+				if (SweetAlertResult.isConfirmed)
+					removePlayer(rowNumber - 1, $(this))				
+			})
 
 		}
-	    //alert(t.value.split("\n")[rowNumber-1]);
 
-	}
+	})
 
-	function addPlayer(){
+	$("#addPlayerBtn").click( function () {
 
-		var player_name = $("#player-input").val();
+		var playerName = $("#playerInput").val();
 		var level = $("#level").val()
 
-		if (player_name == "") {
+		if (playerName == "")
+		  return Swal.fire({
+			  title: 'Error!',
+			  text: 'El nombre no puede ser vacío.',
+			  icon: 'error',
+			  confirmButtonText: 'Volver'
+			})
 
-			return alert("El nombre no puede ser vacío.")
+		$("#level" + level).append(playerName + "\n")
 
-		}
+	})
 
-		$("#level_" + level).append(player_name + "\n")
-
-	}
 
 	function getPlayers(index){
 
-		var players = $.trim($("#level_" + index).val());
+		var players = $.trim($("#level" + index).val());
 
-        if(players != ""){
-            // Guarda todos los nombres de un nivel en un array
-        	var players_full = players.split('\n');
-
-        }
-
-        return players_full;
-
-	}
-
-    var team1 = [], team2 = [], team3 = [];
-
-    function checkEmpty(players){
-
-    	if (!players){
-    		return true
-    	} else {
-    		return false
-    	}
+    if(players != ""){
+      // Guarda todos los nombres de un nivel en un array
+    	var players_full = players.split('\n');
 
     }
 
-	function sortTeams(){
+    return players_full;
 
-		{{#each levels}}
-
-        	var players_level_{{this}} = getPlayers( {{this}} )
-
-        {{/each}}
-        //
-
-        if (checkEmpty(players_level_1) && checkEmpty(players_level_2) && checkEmpty(players_level_3) && checkEmpty(players_level_4) && checkEmpty(players_level_5) ){
-
-        	return alert("Debe haber al menos un jugador para sortear.")
-
-        }
-
-        teamNumber = {{teamNumber}};
-
-		$.get( "/sortTeams", 
-			{ level1: players_level_1, 
-				level2: players_level_2, 
-				level3: players_level_3, 
-				level4: players_level_4, 
-				level5: players_level_5 })
-		  	.done(function( data ) {
-
-		        $("#team_1").text("")
-		        $("#team_2").text("")
-		        $("#team_3").text("")
-
-		  		data.team1.forEach((team1) => {
-
-		  			$("#team_1").append(team1 + "\n")
-
-		  		})
-
-		  		data.team2.forEach((team2) => {
-
-		  			$("#team_2").append(team2 + "\n")
-
-		  		})
-
-		  		data.team3.forEach((team3) => {
-
-		  			$("#team_3").append(team3 + "\n")
-
-		  		})
-
-		  		$("#teamList").collapse('show');
-
-		  	})
-		  	.fail(function(xhr, textStatus, errorThrown) {
-			    alert( "Error sorteando equipos. Error " + errorThrown );
-		  	});
 	}
-</script>
+
+  var team1 = [], 
+  team2 = [], 
+  team3 = [];
+
+  function checkEmpty(players){
+
+  	if (!players)
+  		return true
+  	else
+  		return false
+
+  }
+
+	$("#sortPlayersBtn").click(function() {
+
+  	let players_level_1 = getPlayers( 1 )
+  	let players_level_2 = getPlayers( 2 )
+  	let players_level_3 = getPlayers( 3 )
+  	let players_level_4 = getPlayers( 4 )
+  	let players_level_5 = getPlayers( 5 )
+
+		$("#sortedTeamsRow, #copyTeamsRow").css("display", "none");
+
+    if (checkEmpty(players_level_1) && checkEmpty(players_level_2) && checkEmpty(players_level_3) && checkEmpty(players_level_4) && checkEmpty(players_level_5) )
+			  return Swal.fire({
+				  title: 'Error!',
+				  text: 'Debe haber al menos un jugador para sortear',
+				  icon: 'error',
+				  confirmButtonText: 'Volver'
+				})
+
+		$.get( "/sortTeams", { 
+			level1: players_level_1, 
+			level2: players_level_2, 
+			level3: players_level_3, 
+			level4: players_level_4, 
+			level5: players_level_5 })
+  	.done(function( data ) {
+
+      $("#team1").text("")
+      $("#team2").text("")
+      $("#team3").text("")
+
+  		data.team1.forEach((team1) => $("#team1").append(team1 + "\n"))
+
+  		data.team2.forEach((team2) => $("#team2").append(team2 + "\n"))
+
+  		data.team3.forEach((team3) => $("#team3").append(team3 + "\n"))
+
+  		$("#sortedTeamsRow, #copyTeamsRow").show(300).css("display", "flex");
+
+  	})
+  	.fail(function(xhr, textStatus, errorThrown) {
+		  return Swal.fire({
+			  title: 'Error!',
+			  text: "Error sorteando equipos. Error " + errorThrown,
+			  icon: 'error',
+			  confirmButtonText: 'Volver'
+			})
+  	});
+	})
+
+</script>//
 
 <script>
-	function copyToClipboard(){
+	$("#copyToClipboardBtn").click(function (){
 
-		var emojiArray = ["😈","🖤","💛","💙","💜","💚","🧡","❤️️","👽","👩‍🦲️","🦶️","🧛","👁","🧙‍♂️","🧓","👺"]
+		var emojiArray = ["😈","🖤","💛","💙","💜","💚","🧡","❤️","👽","👩‍🦲️","🦶️","🧛","👁","🧙‍♂️","🧓","👺"]
 
 		try {
 
-			var copyTeam1 = $("#team_1").val();
-			var copyTeam2 = $("#team_2").val();
-			var copyTeam3 = $("#team_3").val();
-		    const el = document.createElement('textarea');
+			var copyTeam1 = $("#team1").val();
+			var copyTeam2 = $("#team2").val();
+			var copyTeam3 = $("#team3").val();
+	    const el = document.createElement('textarea');
 
-		    var random = Math.floor( Math.random() * emojiArray.length )
-		    el.append("Equipo "+ emojiArray[random] +"\n");
-		    el.append(copyTeam1 + "\n");
+	    var random = Math.floor( Math.random() * emojiArray.length )
+	    el.append("Equipo "+ emojiArray[random] +"\n");
+	    el.append(copyTeam1 + "\n");
 
-		    random = Math.floor( Math.random() * emojiArray.length )
-		    el.append("Equipo "+ emojiArray[random] +"\n");
-		    el.append(copyTeam2 + "\n");
+	    random = Math.floor( Math.random() * emojiArray.length )
+	    el.append("Equipo "+ emojiArray[random] +"\n");
+	    el.append(copyTeam2 + "\n");
 
-		    random = Math.floor( Math.random() * emojiArray.length )
-		    el.append("Equipo "+ emojiArray[random] +"\n");
-		    el.append(copyTeam3 + "\n");
+	    random = Math.floor( Math.random() * emojiArray.length )
+	    el.append("Equipo "+ emojiArray[random] +"\n");
+	    el.append(copyTeam3 + "\n");
 
-		    document.body.appendChild(el);
-		    el.select();
-		    document.execCommand('copy');
-		    document.body.removeChild(el);
-		    $('[data-toggle="tooltip"]').tooltip();
-		    alert("Equipos copiados con éxito!")
+	    document.body.appendChild(el);
+	    el.select();
+	    document.execCommand('copy');
+	    document.body.removeChild(el);
+	    //$('[data-toggle="tooltip"]').tooltip();
+		  return Swal.fire({
+			  title: 'Exito!',
+			  text: "Equipos copiados exitosamente!",
+			  icon: 'success',
+			  confirmButtonText: 'Volver'
+			})
 
 		} catch (e){
 
-			alert("Error en la copia de texto! " + e)
+		  return Swal.fire({
+			  title: 'Error!',
+			  text: 'Error en la copia de texto!. Error: ' + e,
+			  icon: 'error',
+			  confirmButtonText: 'Volver'
+			})
 
 		}
 
 
-  	}
+  })
 </script>
 
 
