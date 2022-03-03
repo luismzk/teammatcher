@@ -2,12 +2,9 @@ require('./config/config');
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const {ObjectID} = require('mongodb');
 const hbs = require('hbs');
 
-const passport = require('passport');
 const port = process.env.PORT || 5000; // LocalHost Port
-const { mongoose } = require('./db/mongoose');
 const helpers = require('handlebars-helpers')();
 const handlebars = require('handlebars');
 
@@ -37,7 +34,7 @@ hbs.registerHelper(handlebars);
 app.use(express.static('public'));
 
 // Routes
-require('./routes.js')(app, passport);
+require('./routes.js')(app);
 
 app.listen(port, () => {
   console.log(`Started up at port ${port}`);

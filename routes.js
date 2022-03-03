@@ -1,5 +1,5 @@
 // Routes
-module.exports = (app, passport) => {
+module.exports = (app) => {
   // Index
   /*app.use(require('./routes/index/index'));
   app.use(require('./routes/index/404'));*/

@@ -14,10 +14,7 @@
     "express": "^4.17.1",
     "handlebars": "^4.7.2",
     "handlebars-helpers": "^0.10.0",
-    "hbs": "^4.1.0",
-    "mongodb": "^3.5.2",
-    "mongoose": "^5.8.10",
-    "passport": "^0.4.1"
+    "hbs": "^4.1.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
