@@ -115,7 +115,7 @@
 
 	$(".player-text-area").click(function (){
 
-		var t = $(this)[0]; 
+		const t = $(this)[0]; 
 		// la fila que toca
 		let rowNumber = t.value.substr(0, t.selectionStart).split("\n").length;
 
@@ -143,8 +143,8 @@
 
 	$("#addPlayerBtn").click( function () {
 
-		var playerName = $("#playerInput").val();
-		var level = $("#level").val()
+		const playerName = $("#playerInput").val();
+		const level = $("#level").val()
 
 		if (playerName == "")
 		  return Swal.fire({
@@ -247,32 +247,23 @@
 <script>
 	$("#copyToClipboardBtn").click(function (){
 
-		var emojiArray = ["😈","🖤","💛","💙","💜","💚","🧡","❤️","👽","👩‍🦲️","🦶️","🧛","👁","🧙‍♂️","🧓","👺"]
+		const emojiArray = ["😈","🖤","💛","💙","💜","💚","🧡","❤️","👽","👩‍🦲️","🦶️","🧛","👁","🧙‍♂️","🧓","👺"]
 
 		try {
-
-			var copyTeam1 = $("#team1").val();
-			var copyTeam2 = $("#team2").val();
-			var copyTeam3 = $("#team3").val();
+			const teams = $(".team-text-area")
 	    const el = document.createElement('textarea');
-
-	    var random = Math.floor( Math.random() * emojiArray.length )
-	    el.append("Equipo "+ emojiArray[random] +"\n");
-	    el.append(copyTeam1 + "\n");
-
-	    random = Math.floor( Math.random() * emojiArray.length )
-	    el.append("Equipo "+ emojiArray[random] +"\n");
-	    el.append(copyTeam2 + "\n");
-
-	    random = Math.floor( Math.random() * emojiArray.length )
-	    el.append("Equipo "+ emojiArray[random] +"\n");
-	    el.append(copyTeam3 + "\n");
+			for (let i = 0; i < teams.length; i++) {
+				const teamPlayers = $(teams[i]).val();
+				const random = Math.floor( Math.random() * emojiArray.length )
+				el.append("Equipo "+ emojiArray[random] +"\n");
+				el.append(teamPlayers + "\n");
+			}
 
 	    document.body.appendChild(el);
 	    el.select();
 	    document.execCommand('copy');
 	    document.body.removeChild(el);
-	    //$('[data-toggle="tooltip"]').tooltip();
+
 		  return Swal.fire({
 			  title: 'Exito!',
 			  text: "Equipos copiados exitosamente!",
@@ -325,12 +316,12 @@
 	// https://www.w3schools.com/js/js_cookies.asp
 	// busca el atributo de una cookie con el nombre
   function getCookie(cname) {
-	  var name = cname + "=";
-	  var decodedCookie = decodeURIComponent(document.cookie);
-	  var ca = decodedCookie.split(';');
-	  for(var i = 0; i <ca.length; i++) {
+	  const name = cname + "=";
+	  const decodedCookie = decodeURIComponent(document.cookie);
+	  const ca = decodedCookie.split(';');
+	  for(let i = 0; i < ca.length; i++) {
 
-	    var c = ca[i];
+	    let c = ca[i];
 
 	    while (c.charAt(0) == ' ')
 	      c = c.substring(1);
@@ -345,13 +336,13 @@
 	// agrega los jugadores a la cookie
 	// exDays es dias para que expire la galleta. 3 semanas por defecto
 	function updateCookie(exDays = 21) {
-	  var d = new Date();
+	  const d = new Date();
 	  d.setTime(d.getTime() + (exDays*24*60*60*1000));
-	  var expires = "expires="+ d.toUTCString();
+	  const expires = "expires="+ d.toUTCString();
 
-	  for (var i = 1; i <= 5; i++ ){
+	  for (let i = 1; i <= 5; i++ ){
 	  	// todos los jugadores de ese nivel
-	  	var players = getPlayers( i )
+	  	const players = getPlayers( i )
 
 		  let cookiePlayers = "";
 		  if (players)
@@ -371,15 +362,15 @@
 	function loadCookiePlayers(){
 
 		// revisa los 5 niveles
-		for (var i = 1; i <= 5; i++){
+		for (let i = 1; i <= 5; i++){
 			// busca los jugadores de un nivel en la cookie
-			var players = getCookie("level" + i)
+			const players = getCookie("level" + i)
 			// si hay jugadores, carga
 			if (players){
 				// separa por la coma que separa los jugadores
 				playersArray = players.split(",")
 				// agrega los jugadores al textarea
-				for (var j = 0; j < playersArray.length; j++)
+				for (let j = 0; j < playersArray.length; j++)
 					$("#level" + i).append(playersArray[j] + "\n")
 
 			}
