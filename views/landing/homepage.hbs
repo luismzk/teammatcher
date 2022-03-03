@@ -32,6 +32,20 @@
 			</div> 
 		</div>
 
+		<div class="flex-row" id="teamCountRow">
+			<div class="flex-column">
+				Cantidad de equipos:
+			</div>
+			<div class="flex-column">
+				<select id="teamCount">
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</select>
+			</div>
+		</div>
+
 		<div class="flex-row overflow-x" id="levelContainerRow">
 			{{#each levels}}
 				<div class="flex-column">
@@ -52,14 +66,6 @@
 		</div>
 
 		<div class="flex-row overflow-x" id="sortedTeamsRow">
-			{{#each teams}}
-				<div class="flex-column">
-					<div class="team-container">
-						<p> Equipo {{this}}</p>
-						<textarea readonly id="team{{this}}" class="team-text-area"></textarea>
-					</div>
-				</div>
-			{{/each}}
 		</div>
 
 		<div class="flex-row" id="copyTeamsRow">
@@ -92,40 +98,40 @@
 
 	function removePlayer(line, textArea) {
 
-    let t = $(textArea)[0]; 
-    // los jugadores en el nivel seleccionado
-    let players = t.value.split("\n");
+		let t = $(textArea)[0]; 
+		// los jugadores en el nivel seleccionado
+		let players = t.value.split("\n");
 		// elimina el jugador seleccionado
 		players.splice(line,1)
 		// vacia el text area
-    $(textArea).text("")
-    // quita espacios vacios del array (no se porque pasan)
-    players = players.filter( (play) => play)
+		$(textArea).text("")
+		// quita espacios vacios del array (no se porque pasan)
+		players = players.filter( (play) => play)
 
-    // repopula el text area
+		// repopula el text area
 		players.forEach((rem) => $(textArea).append(rem + "\n") )
 
 	};
 
 	$(".player-text-area").click(function (){
 
-    var t = $(this)[0]; 
-    // la fila que toca
-    let rowNumber = t.value.substr(0, t.selectionStart).split("\n").length;
+		var t = $(this)[0]; 
+		// la fila que toca
+		let rowNumber = t.value.substr(0, t.selectionStart).split("\n").length;
 
 		// el valor de la linea seleccionada
-    let selected = t.value.split("\n")[rowNumber-1];
-    // si el campo tiene texto
-    if (selected != ""){
+		let selected = t.value.split("\n")[rowNumber-1];
+		// si el campo tiene texto
+		if (selected != ""){
 
-		  return Swal.fire({
-			  title: 'Cuidado!',
-			  text: "Eliminar al jugador " + selected + "?",
-			  icon: 'question',
-			  confirmButtonText: 'Eliminar',
-			  confirmButtonColor: "#16A116",
-			  showDenyButton: true,
-			  denyButtonText: "Volver"
+			return Swal.fire({
+				title: 'Cuidado!',
+				text: "Eliminar al jugador " + selected + "?",
+				icon: 'question',
+				confirmButtonText: 'Eliminar',
+				confirmButtonColor: "#16A116",
+				showDenyButton: true,
+				denyButtonText: "Volver"
 			}).then( (SweetAlertResult) => {
 				if (SweetAlertResult.isConfirmed)
 					removePlayer(rowNumber - 1, $(this))				
@@ -156,77 +162,85 @@
 
 	function getPlayers(index){
 
-		var players = $.trim($("#level" + index).val());
+		let players = $.trim($("#level" + index).val());
+		let players_full;
 
-    // Guarda todos los nombres de un nivel en un array
-    if(players != "")
-    	var players_full = players.split('\n');
+		// Guarda todos los nombres de un nivel en un array
+		if (players != "")
+			players_full = players.split('\n');
 
-    return players_full;
+		return players_full;
 
 	}
 
-  var team1 = [], 
-  team2 = [], 
-  team3 = [];
+	let team1 = [], 
+	team2 = [], 
+	team3 = [];
 
-  function checkEmpty(players){
-
-  	if (!players)
-  		return true
-  	else
-  		return false
-
-  }
+	function checkEmpty(players){
+		if (!players)
+			return true
+		else
+			return false
+	}
 
 	$("#sortPlayersBtn").click(function() {
 
-  	let players_level_1 = getPlayers( 1 )
-  	let players_level_2 = getPlayers( 2 )
-  	let players_level_3 = getPlayers( 3 )
-  	let players_level_4 = getPlayers( 4 )
-  	let players_level_5 = getPlayers( 5 )
-
+		let players_level_1 = getPlayers( 1 )
+		let players_level_2 = getPlayers( 2 )
+		let players_level_3 = getPlayers( 3 )
+		let players_level_4 = getPlayers( 4 )
+		let players_level_5 = getPlayers( 5 )
+		let teamCount = $("#teamCount").val()
 		$("#sortedTeamsRow, #copyTeamsRow").css("display", "none");
 
-    if (checkEmpty(players_level_1) && checkEmpty(players_level_2) && checkEmpty(players_level_3) && checkEmpty(players_level_4) && checkEmpty(players_level_5) )
-			  return Swal.fire({
-				  title: 'Error!',
-				  text: 'Debe haber al menos un jugador para sortear',
-				  icon: 'error',
-				  confirmButtonText: 'Volver'
-				})
+		if (checkEmpty(players_level_1) && checkEmpty(players_level_2) && checkEmpty(players_level_3) && checkEmpty(players_level_4) && checkEmpty(players_level_5) )
+			return Swal.fire({
+				title: 'Error!',
+				text: 'Debe haber al menos un jugador para sortear',
+				icon: 'error',
+				confirmButtonText: 'Volver'
+			})
 
 		$.get( "/sortTeams", { 
-			level1: players_level_1, 
-			level2: players_level_2, 
-			level3: players_level_3, 
-			level4: players_level_4, 
-			level5: players_level_5 })
-  	.done(function( data ) {
+			level1: players_level_1,
+			level2: players_level_2,
+			level3: players_level_3,
+			level4: players_level_4,
+			level5: players_level_5,
+			teamCount
+		}).done(function( data ) {
+			$("#sortedTeamsRow").empty()
 
-      $("#team1").text("")
-      $("#team2").text("")
-      $("#team3").text("")
-
-  		data.team1.forEach((team1) => $("#team1").append(team1 + "\n"))
-
-  		data.team2.forEach((team2) => $("#team2").append(team2 + "\n"))
-
-  		data.team3.forEach((team3) => $("#team3").append(team3 + "\n"))
-
-  		$("#sortedTeamsRow, #copyTeamsRow").show(300).css("display", "flex");
-
-  	})
-  	.fail(function(xhr, textStatus, errorThrown) {
-		  return Swal.fire({
-			  title: 'Error!',
-			  text: "Error sorteando equipos. Error " + errorThrown,
-			  icon: 'error',
-			  confirmButtonText: 'Volver'
+			data.forEach((team, index) => {
+				const teamNumber = index + 1; // index starts at 0
+				createTeamTextArea(teamNumber)
+				team.forEach((player) => $(`#team${teamNumber}`).append(player + "\n"))
 			})
-  	});
+
+			$("#sortedTeamsRow, #copyTeamsRow").show(300).css("display", "flex");
+
+		}).fail(function(xhr, textStatus, errorThrown) {
+			return Swal.fire({
+				title: 'Error!',
+				text: "Error sorteando equipos. Error " + errorThrown,
+				icon: 'error',
+				confirmButtonText: 'Volver'
+			})
+		});
 	});
+
+	const createTeamTextArea = (teamNumber) => {
+		const html = 
+				`<div class="flex-column">
+					<div class="team-container">
+						<p>Equipo ${teamNumber}</p>
+						<textarea readonly id="team${teamNumber}" class="team-text-area"></textarea>
+					</div>
+				</div>`
+
+		$("#sortedTeamsRow").append(html)
+	}
 </script>
 
 {{!-- script para copiar al portapapeles --}}
