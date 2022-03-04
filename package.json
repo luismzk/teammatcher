@@ -5,7 +5,9 @@
   "main": "dist/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.ts"
+    "dev": "nodemon src/server.ts",
+    "start": "npm run build && node dist/server.js",
+    "build": "tsc && cp -r src/views dist/ && cp -r src/public dist/"
   },
   "author": "Luis Martinez",
   "license": "ISC",
