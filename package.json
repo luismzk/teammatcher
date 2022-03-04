@@ -6,9 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/server.ts",
-    "start": "npm run build && node dist/server.js",
-    "build": "npm run tsc && cp -r src/views dist/ && cp -r src/public dist/",
-    "tsc": "tsc"
+    "start": "npm i",
+    "build": "tsc && cp -r src/views dist/ && cp -r src/public dist/",
+    "tsc": "tsc",
+    "postinstall": "npm run tsc && npm run build && node dist/server.js"
   },
   "author": "Luis Martinez",
   "license": "ISC",
