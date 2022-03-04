@@ -1,8 +1,8 @@
 
-const { shuffleArray } = require('../../utilities');
+import { shuffleArray } from '../../utilities';
 
 // Funcion principal para sortear los equipos, crea el array que se devuelve al front
-function teamSorter(level1, level2, level3, level4, level5, teamCount){
+export const teamSorter = (level1, level2, level3, level4, level5, teamCount) => {
 
   // Array con arrays, aqui se guardaran todos los equipos
   let teamArray = [];
@@ -17,10 +17,10 @@ function teamSorter(level1, level2, level3, level4, level5, teamCount){
   teamArray = sortAndArrangeTeams(level4, teamArray);
   teamArray = sortAndArrangeTeams(level5, teamArray);
 
-  console.log(teamCount, teamArray)
   return teamArray;
 
 }
+
 const sortAndArrangeTeams = (level, teamArray) => {
   teamArray = sortPlayers(level, teamArray);
   
@@ -30,7 +30,7 @@ const sortAndArrangeTeams = (level, teamArray) => {
 }
 
 // Sortea los jugadores en los equipos
-function sortPlayers(level, teamArray){
+export const sortPlayers = (level, teamArray) => {
 
   if (level){
     // Randomiza el orden del array para repartir

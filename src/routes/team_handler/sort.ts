@@ -1,5 +1,5 @@
-const express = require('express');
-var router = express.Router();
+import express from 'express';
+const router = express.Router();
 
 const { teamSorter } = require('./utils');
 
@@ -20,5 +20,4 @@ router.get('/sortTeams', async function (req, res) {
 
 });
 
-
-module.exports = router;
+export const sortRoutes = router;
