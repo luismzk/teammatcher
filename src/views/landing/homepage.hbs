@@ -147,15 +147,17 @@
 		const level = $("#level").val()
 
 		if (playerName == "")
-		  return Swal.fire({
-			  title: 'Error!',
-			  text: 'El nombre no puede ser vacío.',
-			  icon: 'error',
-			  confirmButtonText: 'Volver'
+		  	return Swal.fire({
+				title: 'Error!',
+				text: 'El nombre no puede ser vacío.',
+				icon: 'error',
+				confirmButtonText: 'Volver'
 			})
 
 		$("#level" + level).append(playerName + "\n")
 		updateCookie(level, playerName);
+		// reiniciamos el name input
+		$("#playerInput").val("");
 
 	})
 
