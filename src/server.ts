@@ -8,7 +8,7 @@ import path from "path";
 // Routes
 import routes from "./routes";
 
-const port = 3000; // LocalHost Port
+const port = process.env.PORT || 5000; // LocalHost Port
 const app = express();
 // start routes
 routes(app);
