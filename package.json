@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/server.ts",
     "start": "node dist/server.js",
-    "build": "tsc && cd dist && ls && npm run copy-files",
+    "build": "tsc && npm run copy-files && cd dist && ls",
     "copy-files": "cp -r ./src/views ./dist/ && cp -r ./src/public ./dist/"
   },
   "author": "Luis Martinez",
